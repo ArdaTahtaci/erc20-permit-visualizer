@@ -1,94 +1,87 @@
-Permit Visualizer – ERC-20 Permit Explorer & Signer
+# Permit Visualizer – ERC-20 Permit Explorer & Signer
 
-A lightweight, modern UI for exploring ERC-20 Permit (EIP-2612) data, visualizing allowances, and generating gasless approval signatures using EIP-712 structured data. Then seamlessly submitting the permit on-chain.
+A lightweight, modern UI for exploring **ERC-20 Permit (EIP-2612)** data, visualizing allowances, and generating **gasless approval signatures** using EIP-712 structured data — then seamlessly submitting the permit on-chain.
 
-This project demonstrates a complete end-to-end flow:
+This project demonstrates a full end-to-end workflow:
 
-✔ Querying permit metadata via a custom on-chain AllowanceLens
-✔ Generating EIP-712 permit signatures using wagmi + RainbowKit
-✔ Submitting the signed permit() transaction on Base Sepolia
-✔ Real-time allowance updates and nonce/domain visualization
+✔ Query permit metadata through an on-chain **AllowanceLens**
+✔ Generate EIP-712 permit signatures using **wagmi + RainbowKit**
+✔ Submit signed `permit()` transactions on Base Sepolia
+✔ Visualize allowances, nonces, domain separator, and metadata
 
-This is a practical, minimal, production-ready example of “Approve Without Approval” — modern token UX used by systems like Uniswap, Aave, Permit2, etc.
+---
 
-🚀 Features
-🔍 Permit View Extraction
+## 🚀 Features
 
-A custom smart contract (AllowanceLens) fetches all permit-related info in one call:
+### 🔍 Permit View Extraction
 
-allowance
+A custom smart contract (`AllowanceLens`) returns:
 
-nonce
+* Allowance
+* Nonce
+* DOMAIN_SEPARATOR
+* Token name & symbol
+* Owner / spender addresses
 
-DOMAIN_SEPARATOR
+### ✍️ EIP-712 Permit Signature
 
-token name & symbol
+Generates a fully compliant EIP-712 typed data signature:
 
-owner / spender addresses
-
-✍️ EIP-712 Permit Signature
-
-Frontend generates structured signature:
-
+```
 Permit(owner, spender, value, nonce, deadline)
+```
 
+### 🔗 On-Chain Permit Submission
 
-via signTypedData() — gasless and wallet-native.
+Submits the signed permit to the deployed ERC-20 Permit contract on Base Sepolia.
 
-🔗 On-Chain Permit Submission
+### 💳 Wallet Integration
 
-Submit the signed message to the permit() function of the deployed ERC-20.
+Uses **RainbowKit + Wagmi** for wallet connection, signing, and transaction submission.
 
-Allowance updates instantly.
+### 🎨 UI / UX
 
-💳 Wallet Integration (RainbowKit)
+* TailwindCSS design
+* Animated background
+* Clean data visualization
+* Real-time fetch → sign → submit flow
 
-Connect any wallet (Metamask, Coinbase Wallet, WalletConnect, etc.)
+---
 
-🎨 Polished UI / UX
+## 📦 Tech Stack
 
-Tailwind CSS
+**Smart Contracts**
 
-Animated backgrounds
+* Solidity (Foundry)
+* Base Sepolia Testnet
+* PermitERC20
+* AllowanceLens (view aggregator)
 
-Live feedback for fetching, signing, and submitting
+**Frontend**
 
-Clean two-panel layout
+* React + Vite
+* TypeScript
+* Wagmi v2
+* Viem
+* RainbowKit
+* TailwindCSS
 
-📦 Tech Stack
+---
 
-Smart Contracts
+## 📜 Contract Addresses (Base Sepolia)
 
-Solidity (Foundry)
+| Contract      | Address                                      |
+| ------------- | -------------------------------------------- |
+| PermitERC20   | `0xc3401990D12371AC87EE5C37774f693a9211f6B5` |
+| AllowanceLens | `0xAce360Ef4E7f41540eACe13f999595FBDcebD174` |
 
-Base Sepolia Testnet
+Both contracts are verified via Blockscout.
 
-Custom Permit-enabled ERC-20
+---
 
-AllowanceLens (view helper)
+## 📁 Project Structure
 
-Frontend
-
-React + Vite
-
-TypeScript
-
-Wagmi v2
-
-RainbowKit
-
-Viem
-
-TailwindCSS
-
-📜 Contract Addresses (Base Sepolia)
-Contract	Address
-PermitERC20	0xc3401990D12371AC87EE5C37774f693a9211f6B5
-AllowanceLens	0xAce360Ef4E7f41540eACe13f999595FBDcebD174
-
-Both contracts are successfully verified on Blockscout.
-
-📁 Project Structure
+```
 contracts/
   ├── src/
   │    ├── tokens/PermitERC20.sol
@@ -107,84 +100,86 @@ frontend/
   │    └── App.tsx
   ├── public/
   └── main.tsx
+```
 
-🛠 Running Locally
-1. Install deps
+---
+
+## 🛠 Running Locally
+
+### 1. Install dependencies
+
+```
 cd frontend
 npm install
+```
 
-2. Create .env for wagmi / RPC
+### 2. Environment variables
+
+```
 VITE_PUBLIC_RPC_URL=https://sepolia.base.org
+```
 
-3. Start dev server
+### 3. Start development server
+
+```
 npm run dev
+```
 
+Visit:
 
-Frontend will run on:
-
+```
 http://localhost:5173
+```
 
-🔄 How the Permit Flow Works
-1. Fetch Permit Data
+---
 
-User submits token / owner / spender.
-UI queries AllowanceLens → returns:
+## 🔄 Permit Flow Breakdown
 
-allowance
+### **1. Query Permit Data**
 
-nonce
+The UI calls `AllowanceLens.getView(token, owner, spender)` which returns structured permit-related data.
 
-domain separator
-
-metadata
-
-addresses
-
-2. Sign Permit (off-chain, gasless)
+### **2. Sign Permit (off-chain)**
 
 User enters:
 
-value
+* value (uint256)
+* deadline (timestamp)
 
-deadline
+Wagmi generates an EIP-712 signature using:
 
-RainbowKit requests signature via:
+```
+signTypedData()
+```
 
-walletClient.signTypedData(...)
+which outputs `v`, `r`, `s`.
 
+### **3. Submit Permit Transaction**
 
-Result: v, r, s
+The signed data is sent via:
 
-3. Submit Permit Transaction
-
-UI calls:
-
+```
 permit(owner, spender, value, deadline, v, r, s)
+```
 
+Allowance + nonce update instantly.
 
-The ERC-20 updates allowance and nonce.
-UI refreshes automatically.
+---
 
-You now have a working Approve-Without-Approval system.
+## 🎯 Summary
 
-📸 Screenshots
+This project is a practical, production-style demonstration of modern token UX powered by EIP-2612.
 
-(You can add your own screenshots here later.)
+It showcases:
 
-🎯 Summary
+* Permit-enabled ERC-20 tokens
+* Off-chain EIP-712 signing
+* On-chain allowance updates
+* Smooth frontend integration with wagmi + viem
+* Real-world patterns used by major DeFi protocols
 
-This mini-project teaches every step of modern ERC-20 token UX:
+Ideal for learning, experimentation, or extending into a fully-fledged token interaction dashboard.
 
-Building a Permit-enabled ERC-20
+---
 
-Visualizing allowances & metadata
-
-Creating EIP-712 signatures
-
-Submitting on-chain permit transactions
-
-Coordinating contracts + viem + wagmi
-
-Deploying on Base Sepolia
-
-Perfect for learning real-world token mechanics and for showcasing blockchain protocol engineering skills.
+(You can add screenshots or demo GIFs later to enrich the README.)
