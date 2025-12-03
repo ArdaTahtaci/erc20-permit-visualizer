@@ -184,4 +184,3 @@ Ideal for learning, experimentation, or extending into a fully-fledged token int
 
 ---
 
-(You can add screenshots or demo GIFs later to enrich the README.)
