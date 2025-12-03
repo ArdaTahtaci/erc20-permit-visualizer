@@ -10,10 +10,12 @@ This project demonstrates a full end-to-end workflow:
 ✔ Visualize allowances, nonces, domain separator, and metadata
 
 ---
+<img width="1887" height="988" alt="image" src="https://github.com/user-attachments/assets/ed1e7354-8787-4164-8e81-4f3525c8b6af" />
+
 
 ## 🚀 Features
 
-### 🔍 Permit View Extraction
+###  Permit View Extraction
 
 A custom smart contract (`AllowanceLens`) returns:
 
@@ -23,7 +25,7 @@ A custom smart contract (`AllowanceLens`) returns:
 * Token name & symbol
 * Owner / spender addresses
 
-### ✍️ EIP-712 Permit Signature
+### EIP-712 Permit Signature
 
 Generates a fully compliant EIP-712 typed data signature:
 
@@ -35,11 +37,11 @@ Permit(owner, spender, value, nonce, deadline)
 
 Submits the signed permit to the deployed ERC-20 Permit contract on Base Sepolia.
 
-### 💳 Wallet Integration
+### Wallet Integration
 
 Uses **RainbowKit + Wagmi** for wallet connection, signing, and transaction submission.
 
-### 🎨 UI / UX
+### UI / UX
 
 * TailwindCSS design
 * Animated background
@@ -48,7 +50,7 @@ Uses **RainbowKit + Wagmi** for wallet connection, signing, and transaction subm
 
 ---
 
-## 📦 Tech Stack
+## Tech Stack
 
 **Smart Contracts**
 
@@ -68,7 +70,7 @@ Uses **RainbowKit + Wagmi** for wallet connection, signing, and transaction subm
 
 ---
 
-## 📜 Contract Addresses (Base Sepolia)
+## Contract Addresses (Base Sepolia)
 
 | Contract      | Address                                      |
 | ------------- | -------------------------------------------- |
@@ -104,7 +106,7 @@ frontend/
 
 ---
 
-## 🛠 Running Locally
+## Running Locally
 
 ### 1. Install dependencies
 
@@ -133,7 +135,7 @@ http://localhost:5173
 
 ---
 
-## 🔄 Permit Flow Breakdown
+## Permit Flow Breakdown
 
 ### **1. Query Permit Data**
 
@@ -166,7 +168,7 @@ Allowance + nonce update instantly.
 
 ---
 
-## 🎯 Summary
+##  Summary
 
 This project is a practical, production-style demonstration of modern token UX powered by EIP-2612.
 
